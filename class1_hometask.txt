@@ -1,0 +1,30 @@
+create table person
+(
+	id serial constraint table_name_pk primary key,
+	name_f varchar(100) not null,
+	name_i varchar(100) not null,
+	name_o varchar(100),
+	phone_str varchar(20) not null,
+	phone_numb int not null
+);
+
+create index person_name_f_index
+	on person (name_f);
+
+create index person_phone_numb_index
+	on person (phone_numb);
+**************************
+INSERT INTO person (name_f, name_i, name_o, phone_str, phone_numb)
+VALUES
+       ('Петров', 'Иван', 'Иванович', '+7(901)554-73-21', 9015547321),
+       ('Иванов', 'Сидор', '', '+7(901)554-73-22', 9015547322),
+       ('Сергеев', 'Петр', '', '+7(901)554-73-23', 9015547323);
+
+****************************
+gopher_corp=# \d
+            List of relations
+Schema |     Name      |   Type   | Owner
+--------+---------------+----------+--------
+public | person        | table    | gopher
+public | person_id_seq | sequence | gopher
+(2 rows)
