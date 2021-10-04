@@ -55,3 +55,12 @@ create table service
     service_name varchar(200),
     service_cost numeric(14,2) default 0 not null
 );
+
+/*
+ Вообще я добавил ограничения при создании таблицы, но можно придумать еще одно
+
+ */
+
+alter table service
+    add constraint check_sum CHECK ((service_cost > 0) AND (service_name <> ''));
+
