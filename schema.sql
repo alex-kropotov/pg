@@ -64,3 +64,18 @@ create table service
 alter table service
     add constraint check_sum CHECK ((service_cost > 0) AND (service_name <> ''));
 
+/*
+ Индексы
+ */
+
+create index payment_account_id_index
+    on payment (account_id);
+
+create index payment_payment_date_index
+    on payment (payment_date);
+
+create index service_account_id_index
+    on service (account_id);
+
+create index service_service_date_index
+    on service (service_date);
