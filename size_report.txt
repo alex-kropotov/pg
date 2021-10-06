@@ -1,0 +1,17 @@
+ Schema |          Name          |   Type   | Owner  | Persistence |    Size    | Description
+--------+------------------------+----------+--------+-------------+------------+-------------
+ public | account                | table    | gopher | permanent   | 8192 bytes |
+ public | account_account_id_seq | sequence | gopher | permanent   | 8192 bytes |
+ public | client                 | table    | gopher | permanent   | 8192 bytes |
+ public | client_client_id_seq   | sequence | gopher | permanent   | 8192 bytes |
+ public | payment                | table    | gopher | permanent   | 0 bytes    |
+ public | payment_payment_id_seq | sequence | gopher | permanent   | 8192 bytes |
+ public | service                | table    | gopher | permanent   | 0 bytes    |
+ public | service_service_id_seq | sequence | gopher | permanent   | 8192 bytes |
+
+ account - 4 строки
+ client - 4 строки
+ payment - 0 строк
+ service - 0 строк
+
+ Весь постгрес на диске - 47,3 мб.

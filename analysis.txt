@@ -1,0 +1,34 @@
+EXPLAIN UPDATE account SET balance =
+                           (SELECT SUM(sum) FROM payment WHERE account_id = 1) -
+                           (SELECT SUM(service_cost) FROM service WHERE account_id = 1)
+WHERE account_id = 1;
+
+/* Без индексов последовательное сканирование */
+
+Update on account  (cost=38.70..46.72 rows=1 width=32)
+  InitPlan 1 (returns $0)
+    ->  Aggregate  (cost=26.39..26.41 rows=1 width=32)
+          ->  Seq Scan on payment  (cost=0.00..26.38 rows=7 width=18)
+                Filter: (account_id = 1)
+  InitPlan 2 (returns $1)
+    ->  Aggregate  (cost=12.13..12.14 rows=1 width=32)
+          ->  Seq Scan on service  (cost=0.00..12.12 rows=1 width=18)
+                Filter: (account_id = 1)
+  ->  Index Scan using account_pk on account  (cost=0.15..8.18 rows=1 width=32)
+        Index Cond: (account_id = 1)
+
+/* с индексами сканирование по индексу */
+
+Update on account  (cost=22.71..30.73 rows=1 width=32)
+  InitPlan 1 (returns $0)
+    ->  Aggregate  (cost=14.37..14.38 rows=1 width=32)
+          ->  Bitmap Heap Scan on payment  (cost=4.21..14.35 rows=7 width=18)
+                Recheck Cond: (account_id = 1)
+                ->  Bitmap Index Scan on payment_account_id_index  (cost=0.00..4.21 rows=7 width=0)
+                      Index Cond: (account_id = 1)
+  InitPlan 2 (returns $1)
+    ->  Aggregate  (cost=8.17..8.18 rows=1 width=32)
+          ->  Index Scan using service_account_id_index on service  (cost=0.14..8.16 rows=1 width=18)
+                Index Cond: (account_id = 1)
+  ->  Index Scan using account_pk on account  (cost=0.15..8.18 rows=1 width=32)
+        Index Cond: (account_id = 1)
